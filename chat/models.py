@@ -18,9 +18,6 @@ class ChatRoom(models.Model):
         verbose_name_plural = "Chat Rooms"
 
     def save(self, *args, **kwargs):
-        """
-        채팅방 이름이 없고, 참여자가 두 명일 때 이름을 자동으로 생성
-        """
         super().save(*args, **kwargs)
         if not self.name and self.participants.count() == 2:
             participant_names = ", ".join(
@@ -34,10 +31,6 @@ class ChatRoom(models.Model):
 
 
 class Message(models.Model):
-    """
-    임시 이미지 저장 경로
-    """
-
     chat_room = models.ForeignKey(
         ChatRoom, related_name="messages", on_delete=models.CASCADE
     )

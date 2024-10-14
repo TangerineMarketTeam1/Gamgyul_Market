@@ -83,7 +83,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         내 게시글에 좋아요가 달렸을 때 알림 생성 및 WebSocket 전송 테스트
         """
-        print(">>> 좋아요 알림 생성 및 WebSocket 전송 테스트 시작")
 
         # 좋아요 생성
         await sync_to_async(Like.objects.create)(post=self.post, user=self.user2)
@@ -106,7 +105,6 @@ class AlarmTestCase(TransactionTestCase):
         # WebSocket 메시지 전송 및 알람 수신 확인
         await communicator.send_json_to({"alarm": alarm.message})
         response = await communicator.receive_json_from()
-        print(f"WebSocket 수신 알림: {response}")
 
         self.assertIn("alarm", response, "알림 메시지가 수신되지 않았습니다.")
         self.assertEqual(response["alarm"], alarm.message)
@@ -117,7 +115,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         내 게시글에 댓글이 달렸을 때 알림 생성 및 WebSocket 전송 테스트
         """
-        print(">>> 댓글 알림 생성 및 WebSocket 전송 테스트 시작")
 
         # 댓글 생성
         await sync_to_async(Comment.objects.create)(
@@ -142,7 +139,6 @@ class AlarmTestCase(TransactionTestCase):
         # WebSocket 메시지 전송 및 알람 수신 확인
         await communicator.send_json_to({"alarm": alarm.message})
         response = await communicator.receive_json_from()
-        print(f"WebSocket 수신 알림: {response}")
 
         self.assertIn("alarm", response, "댓글 알림 메시지가 수신되지 않았습니다.")
         self.assertEqual(response["alarm"], alarm.message)
@@ -153,7 +149,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         다른 사용자가 나를 팔로우할 때 알림 생성 및 WebSocket 전송 테스트
         """
-        print(">>> 팔로우 알림 생성 및 WebSocket 전송 테스트 시작")
 
         # 팔로우 생성
         await sync_to_async(Follow.objects.create)(
@@ -178,7 +173,6 @@ class AlarmTestCase(TransactionTestCase):
         # WebSocket 메시지 전송 및 알람 수신 확인
         await communicator.send_json_to({"alarm": alarm.message})
         response = await communicator.receive_json_from()
-        print(f"WebSocket 수신 알림: {response}")
 
         self.assertIn("alarm", response, "팔로우 알림 메시지가 수신되지 않았습니다.")
         self.assertEqual(response["alarm"], alarm.message)
@@ -189,7 +183,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         다른 사용자가 나에게 메시지를 보냈을 때 알림 생성 및 WebSocket 전송 테스트
         """
-        print(">>> 메시지 전송 및 알림 생성 테스트 시작")
 
         # user2가 메시지를 보냄
         await sync_to_async(Message.objects.create)(
@@ -214,7 +207,6 @@ class AlarmTestCase(TransactionTestCase):
         # WebSocket 메시지 전송 및 알람 수신 확인
         await communicator.send_json_to({"alarm": alarm.message})
         response = await communicator.receive_json_from()
-        print(f"WebSocket 수신 알림: {response}")
 
         self.assertIn("alarm", response, "메시지 알림 메시지가 수신되지 않았습니다.")
         self.assertEqual(response["alarm"], alarm.message)
@@ -225,7 +217,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         WebSocket 연결 종료 시간을 기준으로 메시지 알림이 생성되는지 테스트
         """
-        print(">>> WebSocket 연결 종료 시간에 따른 알림 생성 테스트 시작")
 
         # user1이 WebSocket 연결한 후 즉시 연결 종료
         ws_connection = await sync_to_async(WebSocketConnection.objects.create)(
@@ -256,7 +247,6 @@ class AlarmTestCase(TransactionTestCase):
         # WebSocket 메시지 전송 및 알람 수신 확인
         await communicator.send_json_to({"alarm": alarm.message})
         response = await communicator.receive_json_from()
-        print(f"WebSocket 수신 알림: {response}")
 
         self.assertIn("alarm", response, "메시지 알림 메시지가 수신되지 않았습니다.")
         self.assertEqual(response["alarm"], alarm.message)
@@ -267,7 +257,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         WebSocket 연결이 유지된 경우 알림이 생성되지 않는지 테스트
         """
-        print(">>> WebSocket 연결 유지 시 알림 미생성 테스트 시작")
 
         # user1이 WebSocket 연결을 유지 중
         await sync_to_async(WebSocketConnection.objects.create)(
@@ -299,7 +288,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         알림 삭제 테스트: 알림이 성공적으로 삭제되는지 확인합니다.
         """
-        print(">>> 개별 알림 삭제 테스트 시작")
 
         # 알림 생성
         alarm = Alarm.objects.create(
@@ -319,7 +307,6 @@ class AlarmTestCase(TransactionTestCase):
         """
         알림 일괄 삭제 테스트: 모든 알림이 성공적으로 삭제되는지 확인합니다.
         """
-        print(">>> 알림 일괄 삭제 테스트 시작")
 
         # 알림 여러 개 생성
         Alarm.objects.create(
